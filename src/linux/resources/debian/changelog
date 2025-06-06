@@ -1,4 +1,4 @@
-jd-gui (1.7.1-1) focal; urgency=medium
+jd-gui (1.7.1-1) stable; urgency=medium
 
   * Fix links handling with tabs having empty paths (Thanks @Lerm)
   * Add support for CND (Apache Jackrabbit), Drools and Groovy files (Thanks @sergehuber)

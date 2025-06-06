@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.guardsquare:proguard-gradle:7.6.0'
+        classpath 'com.guardsquare:proguard-gradle:7.7.0'
     }
 }
 
@@ -11,7 +11,7 @@ plugins {
     id 'java'
     id 'distribution'
     id('edu.sc.seis.launch4j') version '3.0.6'
-    id('com.netflix.nebula.ospackage') version '11.10.0'
+    id('com.netflix.nebula.ospackage') version '11.11.2'
 }
 
 repositories {
@@ -135,7 +135,7 @@ ospackage {
     buildRpm.dependsOn 'proguard'
 
     os LINUX
-    distribution 'focal'
+    distribution 'stable'
     customField 'Urgency', 'medium'
     packageName project.name
     packageDescription 'JD-GUI, a standalone graphical utility that displays Java sources from class files'
@@ -144,12 +144,12 @@ ospackage {
     maintainer 'Quentin Lienhardt <pro@quentium.fr>'
     version project.version
     release '1'
-    customField 'Standards-Version', '4.6.2'
+    customField 'Standards-Version', '4.7.2'
     url 'https://github.com/QuentiumYT/jd-gui'
     customField 'Vcs-Browser', 'https://github.com/QuentiumYT/jd-gui'
     customField 'Vcs-Git', 'https://github.com/QuentiumYT/jd-gui.git'
     license = file('LICENSE')
-    requires 'default-jre | default-jre-headless | openjdk-8-jre-headless | openjdk-11-jre-headless | openjdk-17-jre-headless'
+    requires 'default-jre | default-jre-headless | openjdk-8-jre-headless | openjdk-11-jre-headless | openjdk-17-jre-headless | openjdk-21-jre-headless'
 
     into '/opt/' + project.name
     from (proguard.outJarFiles[0]) {
@@ -160,8 +160,8 @@ ospackage {
     }
     from 'LICENSE', 'NOTICE', 'README.md'
 
-    postInstall 'cd /opt/' + project.name + '; ln -s ./' + file(proguard.outJarFiles[0]).name + ' ./jd-gui.jar; xdg-icon-resource install --size 128 --novendor ./jd_icon_128.png jd-gui; xdg-desktop-menu install ./*.desktop'
-    preUninstall 'cd /opt/' + project.name + '; rm -f ./jd-gui.jar; rm -fr ./ext; xdg-desktop-menu uninstall ./jd-gui.desktop'
+    postInstall 'cd /opt/' + project.name + '; ln -s ./' + file(proguard.outJarFiles[0]).name + ' ./jd-gui.jar; xdg-icon-resource install --size 128 --novendor ./jd_icon_128.png jd-gui; xdg-desktop-menu install ./jd-gui.desktop || true'
+    preUninstall 'cd /opt/' + project.name + '; rm -f ./jd-gui.jar; rm -fr ./ext; xdg-desktop-menu uninstall ./jd-gui.desktop || true'
 
     afterEvaluate {
         def outputDir = "build/distributions/${project.name}-${project.version}"

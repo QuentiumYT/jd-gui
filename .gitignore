@@ -15,6 +15,9 @@ out/
 *.iml
 *.iws
 
+# VS Code
+.vscode/
+
 # Eclipse
 .settings/
 classes/
@@ -24,7 +27,7 @@ classes/
 # Mac
 .DS_Store
 
-#Windows
+# Windows
 Thumbs.db
 
 # Maven

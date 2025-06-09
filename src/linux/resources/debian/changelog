@@ -1,4 +1,14 @@
-jd-gui (1.7.1-1) focal; urgency=medium
+jd-gui (1.7.2-1) jammy; urgency=medium
+
+  * Add support for Java 21
+  * Update JD-Core to 1.2.2
+  * Reenable tests bumped to Java 8 minimum
+  * Update dependencies & gradle wrapper
+  * Fixed installation & Debian packaging
+
+ -- Quentin Lienhardt <pro@quentium.fr>  Tue, 09 Jun 2025 09:00:00 +0100
+
+jd-gui (1.7.1-1) jammy; urgency=medium
 
   * Fix links handling with tabs having empty paths (Thanks @Lerm)
   * Add support for CND (Apache Jackrabbit), Drools and Groovy files (Thanks @sergehuber)

@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# unlink /usr/bin/jd-gui
-rm -f /opt/jd-gui/jd-gui.jar
-rm -fr /opt/jd-gui/ext
-xdg-desktop-menu uninstall /opt/jd-gui/jd-gui.desktop
-
-exit 0

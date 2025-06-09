@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# ln -sf "/opt/jd-gui/jd-gui" "/usr/bin/jd-gui"
-
-exit 0

@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.guardsquare:proguard-gradle:7.6.0'
+        classpath 'com.guardsquare:proguard-gradle:7.7.0'
     }
 }
 
@@ -11,7 +11,7 @@ plugins {
     id 'java'
     id 'distribution'
     id('edu.sc.seis.launch4j') version '3.0.6'
-    id('com.netflix.nebula.ospackage') version '11.10.0'
+    id('com.netflix.nebula.ospackage') version '11.11.2'
 }
 
 repositories {
@@ -135,7 +135,7 @@ ospackage {
     buildRpm.dependsOn 'proguard'
 
     os LINUX
-    distribution 'focal'
+    distribution 'stable'
     customField 'Urgency', 'medium'
     packageName project.name
     packageDescription 'JD-GUI, a standalone graphical utility that displays Java sources from class files'
@@ -143,40 +143,54 @@ ospackage {
     packageGroup 'java'
     maintainer 'Quentin Lienhardt <pro@quentium.fr>'
     version project.version
-    release '2'
-    customField 'Standards-Version', '4.6.2'
+    release '1'
+    customField 'Standards-Version', '4.7.2'
     url 'https://github.com/QuentiumYT/jd-gui'
     customField 'Vcs-Browser', 'https://github.com/QuentiumYT/jd-gui'
     customField 'Vcs-Git', 'https://github.com/QuentiumYT/jd-gui.git'
     license = file('LICENSE')
-    requires 'default-jre | default-jre-headless | openjdk-8-jre-headless | openjdk-11-jre-headless | openjdk-17-jre-headless'
+    requires 'default-jre | default-jre-headless | openjdk-8-jre-headless | openjdk-11-jre-headless | openjdk-17-jre-headless | openjdk-21-jre-headless'
 
     into '/opt/' + project.name
-    from (proguard.outJarFiles[0]) {
+    from(proguard.outJarFiles[0]) {
         fileMode 0755
     }
-    from ('src/linux/resources/') {
-        fileMode 0755
+    from('src/linux/resources') {
+        include 'jd-gui.png', 'jd-gui.desktop'
+        fileMode 0644
+    }
+    from('src/linux/resources/jd-gui.desktop') {
+        into '/usr/share/applications'
+    }
+    from('src/linux/resources/jd-gui.png') {
+        into '/usr/share/icons/hicolor/128x128/apps'
+        fileMode 0644
+        rename { 'jd-gui.png' }
     }
     from 'LICENSE', 'NOTICE', 'README.md'
 
-    postInstall 'cd /opt/' + project.name + '; ln -s ./' + file(proguard.outJarFiles[0]).name + ' ./jd-gui.jar; xdg-icon-resource install --size 128 --novendor ./jd_icon_128.png jd-gui; xdg-desktop-menu install ./*.desktop'
-    preUninstall 'cd /opt/' + project.name + '; rm -f ./jd-gui.jar; rm -fr ./ext; xdg-desktop-menu uninstall ./jd-gui.desktop'
-
-    afterEvaluate {
-        def outputDir = "build/distributions/${project.name}-${project.version}"
-
-        tasks.buildDeb.doLast {
-            copy {
-                from buildDeb.outputs.files
-                into outputDir
-            }
-            copy {
-                from 'src/linux/resources/debian'
-                into outputDir + '/debian'
-            }
-        }
-    }
+    postInstall """
+        cd /opt/${project.name} || exit 1
+        ln -sf ./${file(proguard.outJarFiles[0]).name} ./jd-gui.jar
+        xdg-icon-resource install --size 128 --novendor ./jd-gui.png jd-gui || true
+        xdg-desktop-menu install ./jd-gui.desktop || true
+        echo "#!/bin/sh
+        java -jar /opt/${project.name}/jd-gui.jar" > /usr/bin/jd-gui
+        chmod +x /usr/bin/jd-gui
+        if [ -d /usr/share/applications ]; then
+            xdg-desktop-menu forceupdate || true
+        fi
+        """
+    postUninstall """
+        cd /opt/${project.name} || exit 1
+        unlink ./jd-gui.jar
+        rm -rf ./ext
+        xdg-desktop-menu uninstall ./jd-gui.desktop || true
+        rm -f /usr/bin/jd-gui
+        if [ -d /usr/share/applications ]; then
+            xdg-desktop-menu forceupdate || true
+        fi
+        """
 }
 
 // Distributions for OSX and Windows //
@@ -214,17 +228,50 @@ distributions {
     osxDistZip.dependsOn 'proguard'
 }
 
-// Task to run debuild -S after buildDeb
-tasks.register('debuild', Exec) {
-    def debFolder = file("build/distributions/${project.name}-${project.version}")
-
-    if (debFolder.exists()) {
-        // Run 'debuild -S' in the correct folder
-        commandLine 'bash', '-c', 'yes | debuild -S'
-        workingDir debFolder.absolutePath
-    } else {
-        throw new GradleException("Deb folder ${debFolder} does not exist!")
+task prepareSourcePackage(type: Copy) {
+    dependsOn 'proguard'
+    from('build/libs') {
+        include '*-min.jar'
     }
+    from('src/linux/resources') {
+        include 'jd-gui.png', 'jd-gui.desktop'
+    }
+    from('.') {
+        include 'LICENSE', 'NOTICE', 'README.md'
+    }
+    into "build/distributions/${project.name}-${project.version}"
+}
+
+task copyDebianDir(type: Copy) {
+    from('build/debian') {
+        exclude 'control'
+    }
+    from('src/linux/resources/debian')
+    into("build/distributions/${project.name}-${project.version}/debian")
+}
+
+task createTarPackage(type: Tar) {
+    dependsOn 'proguard', 'prepareSourcePackage', 'copyDebianDir'
+    group = 'distribution'
+    description = 'Creates a tarball of the JD-GUI distribution.'
+
+    archiveFileName.set("${project.name}_${project.version}.orig.tar.gz")
+    destinationDirectory.set(file('build/distributions'))
+    compression = Compression.GZIP
+    
+    from("build/distributions/${project.name}-${project.version}") {
+        include '**'
+        exclude 'debian/**'
+        exclude 'build/**'
+        // Exclude other build artifacts if needed
+        into "${project.name}-${project.version}"
+    }
+}
+
+tasks.register('debuild', Exec) {
+    dependsOn 'prepareSourcePackage', 'copyDebianDir', 'createTarPackage'
+    workingDir "build/distributions/${project.name}-${project.version}"
+    commandLine 'bash', '-c', 'yes | debuild -S'
 }
 
 build.finalizedBy buildDeb

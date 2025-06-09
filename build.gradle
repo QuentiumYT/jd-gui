@@ -23,8 +23,8 @@ repositories {
 }
 
 // Common configuration //
-version = '1.7.1'
-ext.set('jdCoreVersion', '1.2.1')
+version = '1.7.2'
+ext.set('jdCoreVersion', '1.2.2')
 
 allprojects {
     apply plugin: 'eclipse'

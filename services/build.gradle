@@ -16,13 +16,13 @@ configurations {
 }
 
 dependencies {
-    implementation 'com.fifesoft:rsyntaxtextarea:3.3.4'
-    implementation 'org.ow2.asm:asm:9.5'
-    implementation 'org.antlr:antlr4-runtime:4.13.1'
+    implementation 'com.fifesoft:rsyntaxtextarea:3.6.0'
+    implementation 'org.ow2.asm:asm:9.8'
+    implementation 'org.antlr:antlr4-runtime:4.13.2'
     implementation 'org.jd:jd-core:' + parent.jdCoreVersion
     implementation project(':api')
     testImplementation 'junit:junit:4.13.2'
-    antlr4 'org.antlr:antlr4:4.13.1'
+    antlr4 'org.antlr:antlr4:4.13.2'
 }
 
 version = parent.version
@@ -31,7 +31,7 @@ task antlr4OutputDir() {
     mkdir antlr4.destinationDir
 }
 
-task antlr4GenerateGrammarSource(dependsOn: antlr4OutputDir, type: JavaExec) {
+task generateGrammarSource(dependsOn: antlr4OutputDir, type: JavaExec) {
     description = 'Generates Java sources from ANTLR4 grammars.'
 
     inputs.dir file(antlr4.antlrSource)
@@ -40,13 +40,13 @@ task antlr4GenerateGrammarSource(dependsOn: antlr4OutputDir, type: JavaExec) {
     def grammars = fileTree(antlr4.antlrSource).include('**/*.g4')
     def pkg = antlr4.grammarPackage.replaceAll("\\.", "/")
 
-    main = 'org.antlr.v4.Tool'
+    mainClass = 'org.antlr.v4.Tool'
     classpath = configurations.antlr4
     args = ['-o', "${antlr4.destinationDir}/${pkg}", '-package', antlr4.grammarPackage, grammars.files].flatten()
 }
 
 compileJava {
-    dependsOn antlr4GenerateGrammarSource
+    dependsOn generateGrammarSource
     source antlr4.destinationDir
 }
 
@@ -57,10 +57,10 @@ clean {
 idea.module {
     sourceDirs += file(antlr4.destinationDir)
 }
-ideaModule.dependsOn antlr4GenerateGrammarSource
+ideaModule.dependsOn generateGrammarSource
 
 eclipse.classpath.file.withXml { xml ->
     def node = xml.asNode()
-    node.appendNode( 'classpathentry', [ kind: 'src', path: antlr4.destinationDir])
+    node.appendNode('classpathentry', [ kind: 'src', path: antlr4.destinationDir])
 }
-eclipseClasspath.dependsOn antlr4GenerateGrammarSource
+eclipseClasspath.dependsOn generateGrammarSource

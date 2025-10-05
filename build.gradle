@@ -10,14 +10,14 @@ buildscript {
 plugins {
     id 'java'
     id 'distribution'
-    id('edu.sc.seis.launch4j') version '3.0.6'
-    id('com.netflix.nebula.ospackage') version '11.11.2'
+    id('edu.sc.seis.launch4j') version '4.0.0'
+    id('com.netflix.nebula.ospackage') version '12.1.1'
 }
 
 repositories {
     mavenCentral()
     maven {
-        url 'https://plugins.gradle.org/m2/'
+        url = 'https://plugins.gradle.org/m2/'
     }
     mavenLocal()
 }
@@ -34,13 +34,14 @@ allprojects {
         sourceCompatibility = targetCompatibility = '1.8'
         options.compilerArgs << '-Xlint:deprecation'
         options.compilerArgs << '-Xlint:unchecked'
+        options.compilerArgs << '-Xlint:-options'
         options.encoding = 'UTF-8'
     }
 
     repositories {
         mavenCentral()
         maven {
-            url 'https://plugins.gradle.org/m2/'
+            url = 'https://plugins.gradle.org/m2/'
         }
         mavenLocal()
     }
@@ -70,7 +71,7 @@ jar {
         deps += subproject.configurations.runtimeClasspath - subproject.configurations.provided
     }
     subprojects.each { subproject ->
-        deps -= subproject.jar.archivePath
+        deps -= subproject.jar.archiveFile.get().asFile
     }
     deps = deps.unique().collect { it.isDirectory() ? it : zipTree(it) }
     from deps
@@ -84,7 +85,7 @@ jar {
     exclude 'META-INF/licenses/**', 'META-INF/maven/**', 'META-INF/INDEX.LIST'
     exclude '**/ErrorStrip_*.properties', '**/RSyntaxTextArea_*.properties', '**/RTextArea_*.properties'
     exclude '**/FocusableTip_*.properties', '**/RSyntaxTextArea_License.txt'
-    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     doFirst {
         // Create SPI directory
         tmpSpiDir.deleteDir()
@@ -109,7 +110,7 @@ task proguard(type: proguard.gradle.ProGuardTask) {
 
     configuration 'src/proguard/resources/proguard.config.txt'
 
-    injars jar.archivePath
+    injars jar.archiveFile.get().asFile
     outjars 'build/libs/' + project.name + '-' + project.version + '-min.jar'
 
     libraryjars System.getProperty('java.home') + '/lib/rt.jar'
@@ -134,18 +135,18 @@ ospackage {
     buildDeb.dependsOn 'proguard'
     buildRpm.dependsOn 'proguard'
 
-    os LINUX
-    distribution 'stable'
+    os = LINUX
+    distribution = 'stable'
     customField 'Urgency', 'medium'
-    packageName project.name
-    packageDescription 'JD-GUI, a standalone graphical utility that displays Java sources from class files'
-    summary 'A Java Decompiler'
-    packageGroup 'java'
-    maintainer 'Quentin Lienhardt <pro@quentium.fr>'
-    version project.version
-    release '1'
+    packageName = project.name
+    packageDescription = 'JD-GUI, a standalone graphical utility that displays Java sources from class files'
+    summary = 'A Java Decompiler'
+    packageGroup = 'java'
+    maintainer = 'Quentin Lienhardt <pro@quentium.fr>'
+    version = project.version
+    release = '1'
     customField 'Standards-Version', '4.7.2'
-    url 'https://github.com/QuentiumYT/jd-gui'
+    url = 'https://github.com/QuentiumYT/jd-gui'
     customField 'Vcs-Browser', 'https://github.com/QuentiumYT/jd-gui'
     customField 'Vcs-Git', 'https://github.com/QuentiumYT/jd-gui.git'
     license = file('LICENSE')
@@ -153,19 +154,19 @@ ospackage {
 
     into '/opt/' + project.name
     from(proguard.outJarFiles[0]) {
-        fileMode 0755
+        fileMode = 0755
     }
     from('src/linux/resources') {
         include 'jd-gui.png', 'jd-gui.desktop'
-        fileMode 0644
+        fileMode = 0644
     }
     from('src/linux/resources/jd-gui.desktop') {
         into '/usr/share/applications'
+        fileMode = 0644
     }
     from('src/linux/resources/jd-gui.png') {
         into '/usr/share/icons/hicolor/128x128/apps'
-        fileMode 0644
-        rename { 'jd-gui.png' }
+        fileMode = 0644
     }
     from 'LICENSE', 'NOTICE', 'README.md'
 
@@ -206,7 +207,6 @@ distributions {
         into('JD-GUI.app/Contents/MacOS') {
             from('src/osx/resources') {
                 include 'universalJavaApplicationStub'
-                fileMode 0755
             }
         }
         into('JD-GUI.app/Contents/Resources/Java') {
@@ -247,7 +247,7 @@ task copyDebianDir(type: Copy) {
         exclude 'control'
     }
     from('src/linux/resources/debian')
-    into("build/distributions/${project.name}-${project.version}/debian")
+    into "build/distributions/${project.name}-${project.version}/debian"
 }
 
 task createTarPackage(type: Tar) {

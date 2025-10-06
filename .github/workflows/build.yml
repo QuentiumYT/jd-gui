@@ -1,0 +1,52 @@
+name: Build JD-GUI Application
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Build App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v5
+
+      - name: Setup LTS JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: "temurin"
+          cache: "gradle"
+
+      - name: Make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build Jar
+        run: ./gradlew build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jd-gui
+          path: build/libs/*.jar
+
+      - name: Publish PPA package
+        uses: yuezk/publish-ppa-package@main
+        # if: github.event_name != 'workflow_dispatch'
+        with:
+          tarball: ${{ github.workspace }}/build/distributions/jd-gui-*.tar.gz
+          debian_dir: ${{ github.workspace }}/src/linux/resources/debian/
+          repository: "quentiumyt/jd-gui-test1"
+          deb_email: "pro@quentium.fr"
+          deb_fullname: "Quentin Lienhardt"
+          gpg_private_key: ${{ secrets.PPA_GPG_PRIVATE_KEY }}
+          gpg_passphrase: ${{ secrets.PPA_GPG_PASSPHRASE }}
+          series: "noble jammy"
+          new_version_template: "{VERSION}-{REVISION}+{SERIES}"
+          keep_changelog: true

@@ -4,17 +4,29 @@ jd-gui (1.7.2-1) jammy; urgency=medium
   * Update JD-Core to 1.2.2
   * Reenable tests bumped to Java 8 minimum
   * Update dependencies & gradle wrapper
-  * Fixed installation & Debian packaging
+  * Fix Debian packaging & publishing
 
- -- Quentin Lienhardt <pro@quentium.fr>  Tue, 09 Jun 2025 09:00:00 +0100
+ -- Quentin Lienhardt <pro@quentium.fr>  Mon, 09 Jun 2025 14:00:00 +0100
 
 jd-gui (1.7.1-1) jammy; urgency=medium
 
-  * Fix links handling with tabs having empty paths (Thanks @Lerm)
-  * Add support for CND (Apache Jackrabbit), Drools and Groovy files (Thanks @sergehuber)
   * Add support for Java 17
   * Update JD-Core to 1.2.1
+  * Fix builds for windows & linux + better linux publishing
   * Update dependencies & gradle wrapper
-  * Moved repo to QuentiumYT
+  * Use DSL version of gradle build & cleanup
+  * Move repo to QuentiumYT
 
- -- Quentin Lienhardt <pro@quentium.fr>  Tue, 01 Oct 2024 20:00:00 +0100
+ -- Quentin Lienhardt <pro@quentium.fr>  Wed, 09 Oct 2024 20:00:00 +0100
+
+jd-gui (1.7.0-1) jammy; urgency=medium
+
+  * Fix links handling with tabs having empty paths (Thanks @Lerm)
+  * Add support for CND (Apache Jackrabbit), Drools and Groovy files (Thanks @sergehuber)
+  * Select previously selected term (Thanks @Laffini)
+  * Update universalJavaApplicationStub for MacOS
+  * Update dependencies & slient proguard
+  * Add support for Java 11 & fix gradle build
+  * Update JD-Core to 1.2.0
+
+ -- Quentin Lienhardt <pro@quentium.fr>  Tue, 18 Sep 2023 17:00:00 +0100

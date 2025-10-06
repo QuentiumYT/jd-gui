@@ -29,6 +29,9 @@ jobs:
 
       - name: Build Jar
         run: ./gradlew build
+        env:
+          GH_USERNAME: ${{ github.actor }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

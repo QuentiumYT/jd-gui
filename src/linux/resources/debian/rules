@@ -8,7 +8,7 @@
 	dh $@ --parallel
 
 override_dh_auto_build:
-    $(CURDIR)/gradlew build --no-daemon
+	$(CURDIR)/gradlew build --no-daemon
 
 override_dh_auto_clean:
-    $(CURDIR)/gradlew clean --no-daemon
+	$(CURDIR)/gradlew clean --no-daemon

@@ -23,7 +23,7 @@ repositories {
 }
 
 // Common configuration //
-version = '1.7.2'
+version = '1.7.3'
 ext.set('jdCoreVersion', '1.2.2')
 
 allprojects {

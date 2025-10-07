@@ -6,3 +6,11 @@
 
 %:
 	dh $@ --parallel
+
+override_dh_auto_build:
+	chmod +x ./gradlew
+	./gradlew build --no-daemon
+
+override_dh_auto_clean:
+	chmod +x ./gradlew
+	./gradlew clean --no-daemon

@@ -37,7 +37,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jd-gui
-          path: build/libs/*.jar
+          path: |
+            build/libs/*.jar
+            build/distributions/
 
       - name: Publish PPA package
         uses: yuezk/publish-ppa-package@main

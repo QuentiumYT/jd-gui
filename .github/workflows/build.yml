@@ -39,7 +39,7 @@ jobs:
           name: jd-gui
           path: |
             build/libs/*.jar
-            build/distributions/
+            build/distributions/*
 
       - name: Publish PPA package
         uses: yuezk/publish-ppa-package@main

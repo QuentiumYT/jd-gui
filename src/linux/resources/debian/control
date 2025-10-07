@@ -2,7 +2,7 @@ Source: jd-gui
 Section: java
 Priority: optional
 Maintainer: Quentin Lienhardt <pro@quentium.fr>
-Build-Depends: debhelper (>= 12), default-jdk, unzip
+Build-Depends: debhelper (>= 12), default-jdk, gradle-debian-helper, unzip
 Standards-Version: 4.7.2
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/QuentiumYT/jd-gui

@@ -31,8 +31,8 @@ jobs:
         # Gradle 8.14.* supports Java 8 up to Java 24 so we have time until Java 25 is default
         run: |
           sed -i 's|distributionUrl=.+|distributionUrl=gradle-8.14.3-bin.zip|' gradle/wrapper/gradle-wrapper.properties
-          echo gradle/wrapper/gradle-wrapper.properties
-          wget https://services.gradle.org/distributions/gradle-8.14.3-bin.zip -P gradle/wrapper/
+          cat gradle/wrapper/gradle-wrapper.properties
+          wget -q https://services.gradle.org/distributions/gradle-8.14.3-bin.zip -P gradle/wrapper/
 
       - name: Build Jar
         run: ./gradlew build

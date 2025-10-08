@@ -38,6 +38,7 @@ target/
 .gradle/
 build/
 !gradle/wrapper/*
+gradle/wrapper/gradle-*-bin.zip
 
 # WinMerge
 *.bak

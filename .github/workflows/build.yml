@@ -27,6 +27,9 @@ jobs:
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
 
+      - name: Include gradle bin for PPA
+        run: wget https://services.gradle.org/distributions/gradle-9.1.0-bin.zip -P gradle/wrapper/
+
       - name: Build Jar
         run: ./gradlew build
         env:

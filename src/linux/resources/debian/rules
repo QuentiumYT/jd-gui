@@ -8,11 +8,13 @@ export DH_VERBOSE=1
 	dh $@ --parallel
 
 override_dh_auto_build:
-# 	chmod +x ./gradlew
+	gradle --version
+	chmod +x ./gradlew
 	gradle build --no-daemon
 	rm -rf .gradle build api/build app/build services/build
 
 override_dh_auto_clean:
-# 	chmod +x ./gradlew
+	gradle --version
+	chmod +x ./gradlew
 	gradle clean --no-daemon
 	rm -rf .gradle build api/build app/build services/build

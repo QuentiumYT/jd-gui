@@ -1,4 +1,4 @@
-jd-gui (1.7.6-1) jammy; urgency=medium
+jd-gui (1.7.7-1) jammy; urgency=medium
 
   * Add support for Java 21
   * Update JD-Core to 1.2.2

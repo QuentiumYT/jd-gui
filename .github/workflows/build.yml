@@ -33,11 +33,6 @@ jobs:
           GH_USERNAME: ${{ github.actor }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Move Jar to distributions
-        run: |
-          mv build/libs/jd-gui-*.jar build/distributions/
-          cp build/distributions/jd-gui-*-min.jar jd-gui.jar
-
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:

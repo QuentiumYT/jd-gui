@@ -284,7 +284,6 @@ task binaryTarball(type: Tar) {
     compression = Compression.GZIP
 
     from(proguard.outJarFiles[0]) {
-        fileMode = 0755
         rename { 'jd-gui.jar' }
     }
     from('src/linux/resources') {

@@ -2,19 +2,21 @@
 # -*- makefile -*-
 
 # Uncomment this to turn on verbose mode.
-export DH_VERBOSE=1
+#export DH_VERBOSE=1
 
 %:
 	dh $@ --parallel
 
-override_dh_auto_build:
-	chmod +x ./gradlew
-	./gradlew --version
-	./gradlew build --no-daemon
-	rm -rf .gradle build api/build app/build services/build
-
-override_dh_auto_clean:
-	chmod +x ./gradlew
-	./gradlew --version
-	./gradlew clean --no-daemon
-	rm -rf .gradle build api/build app/build services/build
+override_dh_auto_install:
+	install -D -m 755 jd-gui.jar $(DESTDIR)/opt/jd-gui/jd-gui.jar
+	install -D -m 644 src/linux/resources/jd-gui.desktop $(DESTDIR)/opt/jd-gui/jd-gui.desktop
+	install -D -m 644 src/linux/resources/jd-gui.png $(DESTDIR)/opt/jd-gui/jd-gui.png
+	install -D -m 644 src/linux/resources/jd-gui.desktop $(DESTDIR)/usr/share/applications/jd-gui.desktop
+	install -D -m 644 src/linux/resources/jd-gui.png $(DESTDIR)/usr/share/icons/hicolor/128x128/apps/jd-gui.png
+	install -D -m 644 LICENSE $(DESTDIR)/opt/jd-gui/LICENSE
+	install -D -m 644 NOTICE $(DESTDIR)/opt/jd-gui/NOTICE
+	install -D -m 644 README.md $(DESTDIR)/opt/jd-gui/README.md
+	# Create launcher script
+	echo '#!/bin/sh' > $(DESTDIR)/usr/bin/jd-gui
+	echo 'java -jar /opt/jd-gui/jd-gui.jar "$$@"' >> $(DESTDIR)/usr/bin/jd-gui
+	chmod 755 $(DESTDIR)/usr/bin/jd-gui

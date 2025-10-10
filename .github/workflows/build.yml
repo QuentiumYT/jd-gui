@@ -27,13 +27,6 @@ jobs:
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Include gradle bin for PPA
-        # Gradle 8.14.* supports Java 8 up to Java 24 so we have time until Java 25 is default
-        run: |
-          sed -i -E 's/distributionUrl=.+/distributionUrl=gradle-8.14.3-bin.zip/g' gradle/wrapper/gradle-wrapper.properties
-          cat gradle/wrapper/gradle-wrapper.properties
-          wget -q https://services.gradle.org/distributions/gradle-8.14.3-bin.zip -P gradle/wrapper/
-
       - name: Build Jar
         run: ./gradlew build
         env:
@@ -41,7 +34,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Move Jar to distributions
-        run: mv build/libs/jd-gui-*.jar build/distributions/
+        run: |
+          mv build/libs/jd-gui-*.jar build/distributions/
+          cp build/distributions/jd-gui-*-min.jar jd-gui.jar
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

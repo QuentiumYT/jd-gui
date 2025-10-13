@@ -1,3 +1,14 @@
+jd-gui (1.7.3-1) jammy; urgency=medium
+
+  * Add support for Java 25 (and all previous versions up to 8)
+  * Update JD-Core to 1.2.3 (published in GitHub maven registry)
+  * Update dependencies & gradle wrapper
+  * Fix gradle 9 deprecations
+  * Fix Debian packaging & publishing for launchpad again (finally)
+  * Add GitHub Actions for building & publishing to launchpad
+
+ -- Quentin Lienhardt <pro@quentium.fr>  Mon, 13 Oct 2025 13:00:00 +0100
+
 jd-gui (1.7.2-1) jammy; urgency=medium
 
   * Add support for Java 21

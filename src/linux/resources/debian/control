@@ -2,14 +2,14 @@ Source: jd-gui
 Section: java
 Priority: optional
 Maintainer: Quentin Lienhardt <pro@quentium.fr>
-Build-Depends: debhelper (>= 12), default-jdk, gradle, unzip
+Build-Depends: debhelper (>= 12)
 Standards-Version: 4.7.2
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/QuentiumYT/jd-gui
 Vcs-Git: https://github.com/QuentiumYT/jd-gui.git
-Homepage: https://github.com/QuentiumYT/jd-gui
+Homepage: https://java-decompiler.github.io/
 
 Package: jd-gui
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, default-jre | default-jre-headless | openjdk-8-jre-headless | openjdk-11-jre-headless | openjdk-17-jre-headless | openjdk-21-jre-headless
-Description: A Java Decompiler JD-GUI, a standalone graphical utility that displays Java sources from class files
+Depends: ${shlibs:Depends}, ${misc:Depends}, default-jre | default-jre-headless | openjdk-8-jre-headless | openjdk-9-jre-headless | openjdk-10-jre-headless | openjdk-11-jre-headless | openjdk-12-jre-headless | openjdk-13-jre-headless | openjdk-14-jre-headless | openjdk-15-jre-headless | openjdk-16-jre-headless | openjdk-17-jre-headless | openjdk-18-jre-headless | openjdk-19-jre-headless | openjdk-20-jre-headless | openjdk-21-jre-headless | openjdk-22-jre-headless | openjdk-23-jre-headless | openjdk-24-jre-headless | openjdk-25-jre-headless
+Description: A standalone graphical utility that displays Java sources from class files

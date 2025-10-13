@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.guardsquare:proguard-gradle:7.7.0'
+        classpath 'com.guardsquare:proguard-gradle:7.8.0'
     }
 }
 
@@ -153,11 +153,11 @@ ospackage {
     version = project.version
     release = '1'
     customField 'Standards-Version', '4.7.2'
-    url = 'https://github.com/QuentiumYT/jd-gui'
+    url = 'https://java-decompiler.github.io/'
     customField 'Vcs-Browser', 'https://github.com/QuentiumYT/jd-gui'
     customField 'Vcs-Git', 'https://github.com/QuentiumYT/jd-gui.git'
     license = file('LICENSE')
-    requires 'default-jre | default-jre-headless | openjdk-8-jre-headless | openjdk-11-jre-headless | openjdk-17-jre-headless | openjdk-21-jre-headless'
+    requires 'default-jre | default-jre-headless | openjdk-8-jre-headless | openjdk-9-jre-headless | openjdk-10-jre-headless | openjdk-11-jre-headless | openjdk-12-jre-headless | openjdk-13-jre-headless | openjdk-14-jre-headless | openjdk-15-jre-headless | openjdk-16-jre-headless | openjdk-17-jre-headless | openjdk-18-jre-headless | openjdk-19-jre-headless | openjdk-20-jre-headless | openjdk-21-jre-headless | openjdk-22-jre-headless | openjdk-23-jre-headless | openjdk-24-jre-headless | openjdk-25-jre-headless'
 
     into '/opt/' + project.name
     from(proguard.outJarFiles[0]) {
@@ -183,7 +183,7 @@ ospackage {
         xdg-icon-resource install --size 128 --novendor ./jd-gui.png jd-gui || true
         xdg-desktop-menu install ./jd-gui.desktop || true
         echo "#!/bin/sh
-        java -jar /opt/${project.name}/jd-gui.jar" > /usr/bin/jd-gui
+        exec java -jar /opt/${project.name}/jd-gui.jar" > /usr/bin/jd-gui
         chmod +x /usr/bin/jd-gui
         if [ -d /usr/share/applications ]; then
             xdg-desktop-menu forceupdate || true
@@ -275,29 +275,24 @@ task createTarPackage(type: Tar) {
     }
 }
 
-task sourceTarball(type: Tar) {
+task binaryTarball(type: Tar) {
     group = 'distribution'
-    description = 'Creates a tar.gz of all sources for Launchpad PPA.'
+    description = 'Creates a tar.gz of debian and JAR binary for Launchpad PPA.'
 
     archiveFileName.set("${project.name}-${project.version}.tar.gz")
     destinationDirectory.set(file('build/distributions'))
     compression = Compression.GZIP
 
-    // Include all sources and important files
+    from(proguard.outJarFiles[0]) {
+        rename { 'jd-gui.jar' }
+    }
+    from('src/linux/resources') {
+        include 'jd-gui.png', 'jd-gui.desktop', 'debian/**'
+    }
     from('.') {
-        include 'api/**'
-        include 'app/**'
-        include 'services/**'
-        include 'src/**'
-        include 'build.gradle', 'settings.gradle', 'gradlew', 'gradlew.bat', 'gradle/**'
         include 'LICENSE', 'README.md', 'NOTICE'
-        exclude 'build/**', '.gradle/**', '**/.idea/**', '**/.vscode/**', '**/.git/**', '**/.github/**'
-        into "${project.name}-${project.version}"
     }
-    // Add debian directory at root of tarball
-    from('src/linux/resources/debian') {
-        into "${project.name}-${project.version}/debian"
-    }
+    into "${project.name}-${project.version}"
 }
 
 tasks.register('debuild', Exec) {
@@ -306,6 +301,6 @@ tasks.register('debuild', Exec) {
     commandLine 'bash', '-c', 'yes | debuild -S'
 }
 
-build.finalizedBy sourceTarball
+build.finalizedBy binaryTarball
 build.finalizedBy buildDeb
 build.finalizedBy buildRpm

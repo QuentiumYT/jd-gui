@@ -1,8 +1,8 @@
 # JD-GUI
 
-JD-GUI, a standalone graphical utility that displays Java sources from class files.
+JD-GUI is a standalone graphical utility that displays Java sources from class files.
 
-This is a fork of the original JD-Core project, which is no longer maintained. I tried to fix and update dependencies to make it live longer and be useful for the community. If you have a good knowledge of Java and want to help, feel free to contribute. 😃
+> This is a fork of the original JD-Core project, which is no longer maintained. I tried to fix and update dependencies to make it live longer and be useful for the community. If you have a good knowledge of Java and want to help, feel free to contribute. 😃
 
 ![Preview of JD-GUI](https://raw.githubusercontent.com/QuentiumYT/jd-gui/master/src/website/img/jd-gui.png)
 
@@ -19,13 +19,16 @@ JD-GUI is a standalone graphical utility that displays Java source codes of ".cl
 > cd jd-gui/
 > ./gradlew build 
 ```
+
 generate :
 - _"build/libs/jd-gui-x.y.z.jar"_
 - _"build/libs/jd-gui-x.y.z-min.jar"_
+- _"build/distributions/jd-gui-windows-x.y.z.tar"_
 - _"build/distributions/jd-gui-windows-x.y.z.zip"_
 - _"build/distributions/jd-gui-osx-x.y.z.tar"_
-- _"build/distributions/jd-gui-x.y.z.deb"_
-- _"build/distributions/jd-gui-x.y.z.rpm"_
+- _"build/distributions/jd-gui-osx-x.y.z.zip"_
+- _"build/distributions/jd-gui-x.y.z-1\_all.deb"_
+- _"build/distributions/jd-gui-x.y.z-1.noarch.rpm"_
 
 ## How to launch JD-GUI ?
 - Double-click on _"jd-gui-x.y.z.jar"_
@@ -58,7 +61,7 @@ launch JD-GUI with your extensions
 - Windows: Delete "jd-gui.exe" and "jd-gui.cfg".
 
 ## License
-Released under the [GNU GPL v3](LICENSE).
+Released under the [GNU GPLv3](LICENSE).
 
 ## Donations
 Did JD-GUI help you to solve a critical situation? Do you use JD-Eclipse daily? What about making a donation?

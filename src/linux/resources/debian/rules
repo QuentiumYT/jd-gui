@@ -7,6 +7,17 @@
 %:
 	dh $@ --parallel
 
-override_dh_auto_build:
-	dh_auto_build --buildsystem=gradle
-	./gradlew build
+override_dh_auto_install:
+	install -D -m 755 jd-gui.jar $(CURDIR)/debian/jd-gui/opt/jd-gui/jd-gui.jar
+	install -D -m 644 jd-gui.desktop $(CURDIR)/debian/jd-gui/opt/jd-gui/jd-gui.desktop
+	install -D -m 644 jd-gui.png $(CURDIR)/debian/jd-gui/opt/jd-gui/jd-gui.png
+	install -D -m 644 jd-gui.desktop $(CURDIR)/debian/jd-gui/usr/share/applications/jd-gui.desktop
+	install -D -m 644 jd-gui.png $(CURDIR)/debian/jd-gui/usr/share/icons/hicolor/128x128/apps/jd-gui.png
+	install -D -m 644 LICENSE $(CURDIR)/debian/jd-gui/opt/jd-gui/LICENSE
+	install -D -m 644 NOTICE $(CURDIR)/debian/jd-gui/opt/jd-gui/NOTICE
+	install -D -m 644 README.md $(CURDIR)/debian/jd-gui/opt/jd-gui/README.md
+	# Create launcher script
+	mkdir -p $(CURDIR)/debian/jd-gui/usr/bin
+	echo '#!/bin/sh' > $(CURDIR)/debian/jd-gui/usr/bin/jd-gui
+	echo 'exec java -jar /opt/jd-gui/jd-gui.jar "$$@"' >> $(CURDIR)/debian/jd-gui/usr/bin/jd-gui
+	chmod 755 $(CURDIR)/debian/jd-gui/usr/bin/jd-gui

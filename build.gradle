@@ -152,7 +152,7 @@ ospackage {
     maintainer = 'Quentin Lienhardt <pro@quentium.fr>'
     version = project.version
     release = '1'
-    customField 'Standards-Version', '4.7.2'
+    customField 'Standards-Version', '4.7.4'
     url = 'https://java-decompiler.github.io/'
     customField 'Vcs-Browser', 'https://github.com/QuentiumYT/jd-gui'
     customField 'Vcs-Git', 'https://github.com/QuentiumYT/jd-gui.git'

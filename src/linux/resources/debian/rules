@@ -1,11 +1,10 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
 %:
-	dh $@ --parallel
+	dh $@
 
 override_dh_auto_install:
 	install -D -m 755 jd-gui.jar $(CURDIR)/debian/jd-gui/opt/jd-gui/jd-gui.jar

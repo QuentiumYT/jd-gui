@@ -2,8 +2,8 @@ Source: jd-gui
 Section: java
 Priority: optional
 Maintainer: Quentin Lienhardt <pro@quentium.fr>
-Build-Depends: debhelper (>= 12)
-Standards-Version: 4.7.2
+Build-Depends: debhelper (>= 13)
+Standards-Version: 4.7.4
 Rules-Requires-Root: no
 Vcs-Browser: https://github.com/QuentiumYT/jd-gui
 Vcs-Git: https://github.com/QuentiumYT/jd-gui.git

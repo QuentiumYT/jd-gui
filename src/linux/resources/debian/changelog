@@ -1,4 +1,11 @@
-jd-gui (1.7.3-1) jammy; urgency=medium
+jd-gui (1.7.4-1) stable; urgency=medium
+
+  * Publish to resolute & bump Debian compat
+  * Update dependencies & gradle wrapper
+
+ -- Quentin Lienhardt <pro@quentium.fr>  Sun, 30 May 2026 14:00:00 +0100
+
+jd-gui (1.7.3-1) stable; urgency=medium
 
   * Add support for Java 25 (and all previous versions up to 8)
   * Update JD-Core to 1.2.3 (published in GitHub maven registry)
@@ -9,7 +16,7 @@ jd-gui (1.7.3-1) jammy; urgency=medium
 
  -- Quentin Lienhardt <pro@quentium.fr>  Mon, 13 Oct 2025 13:00:00 +0100
 
-jd-gui (1.7.2-1) jammy; urgency=medium
+jd-gui (1.7.2-1) stable; urgency=medium
 
   * Add support for Java 21
   * Update JD-Core to 1.2.2
@@ -19,7 +26,7 @@ jd-gui (1.7.2-1) jammy; urgency=medium
 
  -- Quentin Lienhardt <pro@quentium.fr>  Mon, 09 Jun 2025 14:00:00 +0100
 
-jd-gui (1.7.1-1) jammy; urgency=medium
+jd-gui (1.7.1-1) stable; urgency=medium
 
   * Add support for Java 17
   * Update JD-Core to 1.2.1
@@ -30,7 +37,7 @@ jd-gui (1.7.1-1) jammy; urgency=medium
 
  -- Quentin Lienhardt <pro@quentium.fr>  Wed, 09 Oct 2024 20:00:00 +0100
 
-jd-gui (1.7.0-1) jammy; urgency=medium
+jd-gui (1.7.0-1) stable; urgency=medium
 
   * Fix links handling with tabs having empty paths (Thanks @Lerm)
   * Add support for CND (Apache Jackrabbit), Drools and Groovy files (Thanks @sergehuber)

@@ -47,7 +47,7 @@ jobs:
             !build/distributions/jd-gui-*.tar
 
       - name: Publish PPA package
-        uses: Quentium-Forks/publish-ppa-package@main
+        uses: yuezk/publish-ppa-package@main
         if: github.event_name != 'workflow_dispatch'
         with:
           tarball: ${{ github.workspace }}/build/distributions/jd-gui-*.tar.gz
